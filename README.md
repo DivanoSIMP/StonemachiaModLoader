@@ -1,1 +1,1 @@
-# StonemachiaModLoader-4
+# StonemachiaModLoader
