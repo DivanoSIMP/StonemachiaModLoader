@@ -1,0 +1,78 @@
+﻿<Window x:Class="StonemachiaModLoader.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:StonemachiaModLoader"
+        xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+        mc:Ignorable="d"
+        Title="StonemachiaModLoader" Height="450" Width="800"
+        WindowState="Maximized"
+        Background="{StaticResource Background}">
+
+    <Grid x:Name="WindowGrid">
+        <Grid.RowDefinitions>
+            <RowDefinition Name="ToolbarRow" Height="Auto"/>
+            <RowDefinition Name="ContentView" Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid.LayoutTransform>
+            <ScaleTransform
+                ScaleX="1.25"
+                ScaleY="1.25"/>
+        </Grid.LayoutTransform>
+
+        <!-- Logo Bar -->
+        <Border Background="{StaticResource Surface}"
+            Padding="10">
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Logo -->
+                <StackPanel
+                Grid.Column="0"
+                Orientation="Horizontal"
+                VerticalAlignment="Center">
+
+                    <Border
+                    Width="36"
+                    Height="36"
+                    CornerRadius="6"
+                    Background="{StaticResource Border}"
+                    VerticalAlignment="Center">
+
+                        <TextBlock
+                        Text="⚒"
+                        FontSize="22"
+                        Foreground="{StaticResource Accent}"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"/>
+                    </Border>
+
+                    <StackPanel
+                    Margin="12,0,0,0"
+                    VerticalAlignment="Center">
+
+                        <TextBlock
+                        Text="Stonemachia"
+                        FontSize="18"
+                        FontWeight="SemiBold"
+                        Foreground="{StaticResource Text}"/>
+
+                        <TextBlock
+                        Text="MOD LOADER"
+                        FontSize="10"
+                        Foreground="{StaticResource Muted}"/>
+                    </StackPanel>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <Frame Grid.Row="1" x:Name="MainFrame" NavigationUIVisibility="Hidden"/>
+    </Grid>
+</Window>

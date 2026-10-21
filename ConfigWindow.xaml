@@ -1,0 +1,167 @@
+﻿<Window x:Class="StonemachiaModLoader.ConfigWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:StonemachiaModLoader"
+        mc:Ignorable="d"
+        Title="Settings" Height="760" Width="820" MinHeight="650" MinWidth="700"
+        WindowStartupLocation="CenterOwner"
+        Background="{StaticResource Background}" Foreground="{StaticResource Text}">
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0">
+            <TextBlock Text="Settings" FontSize="25" FontWeight="SemiBold" Foreground="{StaticResource Text}"/>
+            <TextBlock Text="Configure the game executable, injector and UE4SS library." Margin="0,5,0,12"
+                       Foreground="{StaticResource Muted}" TextWrapping="Wrap"/>
+            <Separator Background="{StaticResource Border}" Height="1"/>
+        </StackPanel>
+
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+            <StackPanel Margin="0,16,8,16">
+                <!-- Game EXE -->
+                <TextBlock Text="Game Executable (.exe)" Margin="0,0,5,7"
+                           Foreground="{StaticResource Text}"/>
+                <Grid Margin="0,0,0,16">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    
+                    <TextBox x:Name="GameExeText" TextChanged="ConfigurationPath_TextChanged"
+                             Style="{StaticResource Textbox_Background}"/>
+                    
+                    <Button Grid.Column="1" Style="{StaticResource SquareButton_Accent}"
+                            Click="BrowseGame_Click" Content="Browse..." Cursor="Hand"/>
+                </Grid>
+
+                <!-- Injector EXE -->
+                <TextBlock Text="Injector (.exe)" Margin="0,0,5,7"
+                           Foreground="{StaticResource Text}"/>
+                <Grid Margin="0,0,0,16">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    
+                    <TextBox x:Name="InjectorExeText" Style="{StaticResource Textbox_Background}"
+                             TextChanged="ConfigurationPath_TextChanged"/>
+                    
+                    <Button Grid.Column="1" Style="{StaticResource SquareButton_Accent}"
+                            Click="BrowseInjector_Click" Content="Browse..." Cursor="Hand"/>
+                </Grid>
+
+                <!-- UE4SS DLL -->
+                <TextBlock Text="UE4SS Library (.dll)" Margin="0,0,5,7"
+                           Foreground="{StaticResource Text}"/>
+                <Grid Margin="0,0,0,16">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox x:Name="Ue4ssDllText" Style="{StaticResource Textbox_Background}"
+                             TextChanged="ConfigurationPath_TextChanged"/>
+                    
+                    <Button Grid.Column="1" Style="{StaticResource SquareButton_Accent}"
+                            Click="BrowseUe4ss_Click" Content="Browse..." Cursor="Hand"/>
+                </Grid>
+
+
+                <Separator Background="{StaticResource Border}" Margin="0,0,0,16"/>
+
+                <!-- Installation Check -->
+                <Border Background="{StaticResource Surface}" BorderBrush="{StaticResource Border}" BorderThickness="1" CornerRadius="8" Padding="16">
+                    <StackPanel>
+                        <DockPanel LastChildFill="True" Margin="0,0,0,6">
+                            <Button DockPanel.Dock="Right" x:Name="CheckInstallationButton" Content="Check Installation"
+                                    Padding="14,7" MinWidth="145" Click="CheckInstallation_Click"
+                                    Style="{StaticResource SquareRoundedButton_Accent}"
+                                    BorderThickness="0" FontWeight="SemiBold" Cursor="Hand"/>
+                            <StackPanel>
+                                <TextBlock Text="Installation Check" FontSize="18"
+                                           FontWeight="SemiBold" Foreground="{StaticResource Text}"/>
+                                <TextBlock Text="Validate all components before launching the game."
+                                           Foreground="{StaticResource Muted}"
+                                           Margin="0,4,12,0" TextWrapping="Wrap"/>
+                            </StackPanel>
+                        </DockPanel>
+                        
+                        <Separator Background="{StaticResource Border}" Margin="0,10,0,12"/>
+
+                        <Grid Margin="0,0,0,12">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="150"/>
+                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <TextBlock Text="Game executable" VerticalAlignment="Top"
+                                       FontWeight="SemiBold" Foreground="{StaticResource Text}"/>
+                            
+                            <TextBlock x:Name="GameStatus" Grid.Column="1" Text="Not checked"
+                                       Foreground="{StaticResource Muted}" FontWeight="SemiBold"/>
+                            
+                            <TextBlock x:Name="GameDetails" Grid.Column="2" Text="Select the game's actual executable."
+                                       Foreground="{StaticResource Muted}" TextWrapping="Wrap"/>
+                        </Grid>
+                        
+                        <Separator Background="{StaticResource Border}" Margin="0,0,0,12"/>
+                        
+                        <Grid Margin="0,0,0,12">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="150"/>
+                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <TextBlock Text="Injector" VerticalAlignment="Top" FontWeight="SemiBold"
+                                       Foreground="{StaticResource Text}"/>
+                            
+                            <TextBlock x:Name="InjectorStatus" Grid.Column="1" Text="Not checked"
+                                       Foreground="{StaticResource Muted}" FontWeight="SemiBold"/>
+                            
+                            <TextBlock x:Name="InjectorDetails" Grid.Column="2" Text="Select the Nefarius Injector executable."
+                                       Foreground="{StaticResource Muted}" TextWrapping="Wrap"/>
+                        </Grid>
+                        
+                        <Separator Background="{StaticResource Border}" Margin="0,0,0,12"/>
+                        
+                        <Grid Margin="0,0,0,8">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="150"/>
+                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <TextBlock Text="UE4SS library" VerticalAlignment="Top" FontWeight="SemiBold"
+                                       Foreground="{StaticResource Text}"/>
+                            
+                            <TextBlock x:Name="DllStatus" Grid.Column="1" Text="Not checked"
+                                       Foreground="{StaticResource Muted}" FontWeight="SemiBold"/>
+                            
+                            <TextBlock x:Name="DllDetails" Grid.Column="2" Text="Select the main UE4SS.dll file."
+                                       Foreground="{StaticResource Muted}" TextWrapping="Wrap"/>
+                        </Grid>
+                        
+                        <TextBlock x:Name="CheckSummary" Text="Run the check to see component status."
+                                   Foreground="{StaticResource Muted}" TextWrapping="Wrap" Margin="0,8,0,0"/>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,14,0,0">
+            <Button Content="Cancel" Width="100" Height="34" Margin="0,0,10,0" Cursor="Hand"
+                    Style="{StaticResource SquareRoundedButton_Accent}" Click="CancelConfig_Click"/>
+            
+            <Button Content="Save" Width="100" Height="34" Cursor="Hand"
+                    Style="{StaticResource SquareRoundedButton_Accent}" Click="SaveConfig_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>

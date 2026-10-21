@@ -1,0 +1,32 @@
+﻿<Window x:Class="StonemachiaModLoader.ProfileWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:StonemachiaModLoader"
+        mc:Ignorable="d"
+        Title="Profile Editor" Height="150" Width="250" MinHeight="150" MinWidth="250"
+        Background="{StaticResource Background}">
+
+    <Grid Margin="10">
+        <StackPanel Background="{StaticResource Surface}">
+            <TextBlock Text="Profile Name"
+                       Foreground="{StaticResource Text}"
+                       FontSize="12" Padding="5"
+                       FontWeight="DemiBold"
+                       Margin="0,0,0,5"/>
+            
+            <TextBox x:Name="ProfileNameTextBox"
+                     Width="200" Height="30" Margin="0,0,0,10"
+                     Foreground="{StaticResource Text}"
+                     Background="{StaticResource Border}"
+                     BorderBrush="{StaticResource Background}"
+                     BorderThickness="1"
+                     Padding="5"
+                     IsReadOnly="False"/>
+            
+            <Button Content="Create New Profile" FontSize="13" Width="130" Height="30"
+                    Style="{StaticResource RoundedButton_Text}" Click="SaveProfileButton_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>
