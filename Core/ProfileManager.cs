@@ -6,13 +6,17 @@ namespace StonemachiaModLoader.Core;
 
 public sealed class ProfileManager
 {
+    private readonly string _launcherPath = Path.Combine(
+        Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+        "StonemachiaModLoader");
+
     private readonly string _profilesPath = Path.Combine(
         Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-        "StonemachiaLoader", "profiles");
+        "StonemachiaModLoader", "profiles");
 
     private readonly string _selectedProfilePath = Path.Combine(
         Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-        "StonemachiaLoader", "selected-profile.txt");
+        "StonemachiaModLoader", "selected-profile.txt");
 
     private readonly List<Profile> _profiles = [];
     private Profile? _selectedProfile;
@@ -97,12 +101,12 @@ public sealed class ProfileManager
     public bool HasProfileSelected() => _selectedProfile is not null;
     public Profile? GetSelectedProfile() => _selectedProfile;
 
-    public void OpenProfilesFolder()
+    public void OpenLauncherFolder()
     {
-        Directory.CreateDirectory(_profilesPath);
+        Directory.CreateDirectory(_launcherPath);
         Process.Start(new ProcessStartInfo
         {
-            FileName = _profilesPath,
+            FileName = _launcherPath,
             UseShellExecute = true
         });
     }

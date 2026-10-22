@@ -13,7 +13,7 @@ internal sealed class ConfigManager
 
     private static readonly string ConfigDirectory = Path.Combine(
         Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-        "StonemachiaLoader");
+        "StonemachiaModLoader");
 
     private static readonly string ConfigPath = Path.Combine(ConfigDirectory, "config.json");
 

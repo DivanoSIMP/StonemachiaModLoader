@@ -44,8 +44,14 @@ public partial class ProfilesPage : Page
 
     private void OpenFolderButton_Click(object sender, RoutedEventArgs e)
     {
-        try { _profileManager.OpenProfilesFolder(); }
-        catch (Exception ex) { ShowError("Could not open profiles folder.", ex); }
+        try
+        {
+            _profileManager.OpenLauncherFolder();
+        }
+        catch (Exception ex)
+        {
+            ShowError("Could not open launcher folder.", ex);
+        }
     }
 
     private void OpenConfigsButton_Click(object sender, RoutedEventArgs e)
@@ -77,9 +83,10 @@ public partial class ProfilesPage : Page
 
             await Launcher.LaunchModdedAsync(config.GameExe, config.InjectorExe, config.Ue4ssDll);
         }
-        catch (OperationCanceledException)
+        catch (OperationCanceledException ex)
         {
             // The user or application cancelled the operation.
+            ShowError("The operation was cancelled.", ex);
         }
         catch (Exception ex)
         {
@@ -91,7 +98,10 @@ public partial class ProfilesPage : Page
         }
     }
 
-    private static void ShowError(string message, Exception exception) =>
+    private static void ShowError(string message, Exception exception)
+    {
+        Logger.Error($"Error: {message}", exception);
         MessageBox.Show($"{message}\n\n{exception.Message}", "Stonemachia Mod Loader",
             MessageBoxButton.OK, MessageBoxImage.Error);
+    }
 }

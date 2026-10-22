@@ -18,6 +18,10 @@ public partial class ConfigWindow : Window
     private static readonly Brush WarningBrush = new SolidColorBrush(Color.FromRgb(0xE9, 0xB4, 0x4C));
     private static readonly Brush ErrorBrush = new SolidColorBrush(Color.FromRgb(0xC9, 0x4C, 0x4C));
 
+    private const string DefaultGamePath = "C:\\Program Files (x86)\\Steam\\steamapps\\common";
+    private static readonly string DefaultInjectorPath = Path.Combine(AppContext.BaseDirectory, "Dependencies\\Tools\\Injector.exe");
+    private static readonly string DefaultDllPath = Path.Combine(AppContext.BaseDirectory, "Dependencies\\UE4SS\\UE4SS.dll");
+
     public ConfigWindow()
     {
         InitializeComponent();
@@ -51,14 +55,23 @@ public partial class ConfigWindow : Window
             text.Text = dialog.FileName;
     }
 
-    private void BrowseGame_Click(object sender, RoutedEventArgs e) =>
+    private void BrowseGame_Click(object sender, RoutedEventArgs e)
+    {
+        if (string.IsNullOrEmpty(_config.GameExe)) GameExeText.Text = DefaultGamePath;
         BrowseFile(GameExeText, "Game executable (*.exe)|*.exe", GameExeText.Text);
+    }
 
-    private void BrowseInjector_Click(object sender, RoutedEventArgs e) =>
+    private void BrowseInjector_Click(object sender, RoutedEventArgs e)
+    {
+        if (string.IsNullOrEmpty(_config.InjectorExe)) InjectorExeText.Text = DefaultInjectorPath;
         BrowseFile(InjectorExeText, "Injector executable (*.exe)|*.exe", InjectorExeText.Text);
+    }
 
-    private void BrowseUe4ss_Click(object sender, RoutedEventArgs e) =>
+    private void BrowseUe4ss_Click(object sender, RoutedEventArgs e)
+    {
+        if (string.IsNullOrEmpty(_config.Ue4ssDll)) Ue4ssDllText.Text = DefaultDllPath;
         BrowseFile(Ue4ssDllText, "Dynamic-link library (*.dll)|*.dll", Ue4ssDllText.Text);
+    }
 
     private void ConfigurationPath_TextChanged(object sender, TextChangedEventArgs e)
     {
@@ -85,6 +98,15 @@ public partial class ConfigWindow : Window
         {
             await Task.Yield();
             ValidationReport report = FileValidation.Validate(GameExeText.Text.Trim(), InjectorExeText.Text.Trim(), Ue4ssDllText.Text.Trim());
+
+            foreach (var error in report.Errors)
+            {
+                Logger.Error(error);
+            }
+            foreach (var warnings in report.Warnings)
+            {
+                Logger.Warning(warnings);
+            }
 
             ApplyComponentResult("Game executable", report, GameStatus, GameDetails,
                 "Game executable", "No common Unreal Engine markers were found");

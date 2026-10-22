@@ -117,7 +117,7 @@
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
                     <Border CornerRadius="10" Background="{TemplateBinding Background}">
-                        <iconPacks:PackIconBootstrapIcons Kind="Trash3Fill" Foreground="{TemplateBinding Foreground}"
+                        <iconPacks:PackIconLucide Kind="Trash2" Foreground="{TemplateBinding Foreground}"
                                                           HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Border>
 

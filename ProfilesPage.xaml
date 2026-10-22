@@ -151,7 +151,7 @@
                             Style="{StaticResource RoundedButton_Accent}"
                             Click="LaunchGameButton_Click">
                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                            <iconPacks:PackIconEntypo Kind="ControllerPlay" Foreground="{StaticResource Text}"
+                            <iconPacks:PackIconLucide Kind="Play" Foreground="{StaticResource Text}"
                                                       VerticalAlignment="Center"/>
                             <TextBlock Text="LAUNCH GAME" Margin="5,0,0,0" 
                                        Foreground="{StaticResource Text}"/>
