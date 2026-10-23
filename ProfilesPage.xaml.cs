@@ -1,5 +1,6 @@
 using StonemachiaModLoader.Core;
 using StonemachiaModLoader.CustomControls;
+using System;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -19,8 +20,12 @@ public partial class ProfilesPage : Page
 
     public void RefreshProfiles()
     {
+        Logger.Info("Loading profiles");
         ProfilesStackPanel.Children.Clear();
+
         ProfilesStackPanel.Children.Add(WARNING);
+        Logger.Warning("The profiles feature is still under development");
+
         var profiles = _profileManager.LoadProfiles();
 
         if (!_profileManager.HasProfileSelected() && profiles.Count > 0)
@@ -34,6 +39,7 @@ public partial class ProfilesPage : Page
             control.ProfileName.Text = profile.Name;
             ProfilesStackPanel.Children.Add(control);
         }
+        Logger.Info("Profiles successfully loaded");
     }
 
     private void ProfileCreationButton_Click(object sender, RoutedEventArgs e)
@@ -56,7 +62,11 @@ public partial class ProfilesPage : Page
 
     private void OpenConfigsButton_Click(object sender, RoutedEventArgs e)
     {
-        var window = new ConfigWindow { Owner = Window.GetWindow(this) };
+        var window = new ConfigWindow
+        {
+            Owner = Window.GetWindow(this)
+        };
+
         window.ShowDialog();
     }
 
@@ -73,6 +83,7 @@ public partial class ProfilesPage : Page
                 string.IsNullOrWhiteSpace(config.InjectorExe) ||
                 string.IsNullOrWhiteSpace(config.Ue4ssDll))
             {
+                Logger.Error("Game executable, injector and UE4SS DLL can't be empty or null");
                 MessageBox.Show(
                     "Configure the game executable, injector and UE4SS DLL before launching.",
                     "Setup required", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -85,8 +96,7 @@ public partial class ProfilesPage : Page
         }
         catch (OperationCanceledException ex)
         {
-            // The user or application cancelled the operation.
-            ShowError("The operation was cancelled.", ex);
+            Logger.Error("Cancelled operation", ex);
         }
         catch (Exception ex)
         {
@@ -100,7 +110,7 @@ public partial class ProfilesPage : Page
 
     private static void ShowError(string message, Exception exception)
     {
-        Logger.Error($"Error: {message}", exception);
+        Logger.Error(message, exception);
         MessageBox.Show($"{message}\n\n{exception.Message}", "Stonemachia Mod Loader",
             MessageBoxButton.OK, MessageBoxImage.Error);
     }

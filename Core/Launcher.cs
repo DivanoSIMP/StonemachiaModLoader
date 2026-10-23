@@ -18,6 +18,7 @@ internal static class Launcher
         string gamePath = ValidateFile(gameExe, "Game executable");
         string injectorPath = ValidateFile(injectorExe, "Nefarius Injector executable");
         string dllPath = ValidateFile(ue4ssDll, "UE4SS DLL");
+
         ValidationReport validation = FileValidation.Validate(gamePath, injectorPath, dllPath);
         if (!validation.IsValid)
             throw new InvalidOperationException("Launch validation failed:" + Environment.NewLine +

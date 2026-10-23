@@ -1,9 +1,11 @@
 using Microsoft.Win32;
 using StonemachiaModLoader.Core;
+using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using static System.Net.WebRequestMethods;
 
 namespace StonemachiaModLoader;
 
@@ -19,7 +21,7 @@ public partial class ConfigWindow : Window
     private static readonly Brush ErrorBrush = new SolidColorBrush(Color.FromRgb(0xC9, 0x4C, 0x4C));
 
     private const string DefaultGamePath = "C:\\Program Files (x86)\\Steam\\steamapps\\common";
-    private static readonly string DefaultInjectorPath = Path.Combine(AppContext.BaseDirectory, "Dependencies\\Tools\\Injector.exe");
+    private static readonly string DefaultInjectorPath = Path.Combine(AppContext.BaseDirectory, "Dependencies\\Injector\\Injector.exe");
     private static readonly string DefaultDllPath = Path.Combine(AppContext.BaseDirectory, "Dependencies\\UE4SS\\UE4SS.dll");
 
     public ConfigWindow()
@@ -99,15 +101,6 @@ public partial class ConfigWindow : Window
             await Task.Yield();
             ValidationReport report = FileValidation.Validate(GameExeText.Text.Trim(), InjectorExeText.Text.Trim(), Ue4ssDllText.Text.Trim());
 
-            foreach (var error in report.Errors)
-            {
-                Logger.Error(error);
-            }
-            foreach (var warnings in report.Warnings)
-            {
-                Logger.Warning(warnings);
-            }
-
             ApplyComponentResult("Game executable", report, GameStatus, GameDetails,
                 "Game executable", "No common Unreal Engine markers were found");
             ApplyComponentResult("UE4SS library", report, DllStatus, DllDetails,
@@ -118,6 +111,7 @@ public partial class ConfigWindow : Window
             if (injectorHasFileError)
             {
                 string details = string.Join(" ", report.Errors.Where(x => x.StartsWith("Injector", StringComparison.OrdinalIgnoreCase)));
+                Logger.Error(details);
                 SetStatus(InjectorStatus, InjectorDetails, "Invalid", details, StatusKind.Error);
             }
             else
@@ -126,12 +120,17 @@ public partial class ConfigWindow : Window
                 {
                     await FileValidation.ValidateNefariusInjectorAsync(Path.GetFullPath(InjectorExeText.Text.Trim()));
                     if (!string.IsNullOrEmpty(injectorWarning))
+                    {
+                        Logger.Warning("Suspicious validation from Injector.");
+                        Logger.Warning(injectorWarning);
                         SetStatus(InjectorStatus, InjectorDetails, "Warning", injectorWarning + " The command-line options were detected.", StatusKind.Warning);
+                    }
                     else
                         SetStatus(InjectorStatus, InjectorDetails, "Valid", "Executable is readable and expected --process-id / --inject options were detected.", StatusKind.Success);
                 }
                 catch (Exception ex)
                 {
+                    Logger.Error("Injector failed validation.", ex);
                     SetStatus(InjectorStatus, InjectorDetails, "Invalid", ex.Message, StatusKind.Error);
                 }
             }
@@ -157,6 +156,7 @@ public partial class ConfigWindow : Window
         }
         catch (Exception ex)
         {
+            Logger.Error("The installation check could not complete", ex);
             CheckSummary.Text = "The installation check could not complete: " + ex.Message;
             CheckSummary.Foreground = ErrorBrush;
         }
@@ -209,6 +209,7 @@ public partial class ConfigWindow : Window
         ValidationReport report = FileValidation.Validate(game, injector, dll);
         if (!report.IsValid)
         {
+            Logger.Error("Configuration validation failed.");
             MessageBox.Show(string.Join(Environment.NewLine + Environment.NewLine, report.Errors),
                 "Configuration validation failed", MessageBoxButton.OK, MessageBoxImage.Error);
             return;
@@ -237,6 +238,7 @@ public partial class ConfigWindow : Window
         }
         catch (Exception ex)
         {
+            Logger.Error("Injector validation failed.", ex);
             MessageBox.Show($"The configuration was not saved.\n\n{ex.Message}",
                 "Injector validation failed", MessageBoxButton.OK, MessageBoxImage.Error);
         }

@@ -18,28 +18,5 @@ namespace StonemachiaModLoader
             MainFrame.Content = profilePage;
             profilePage.RefreshProfiles();
         }
-
-        private void FileTooltipButton_Click(object sender, RoutedEventArgs e)
-        {
-            ContextMenu ctx = (ContextMenu)WindowGrid.FindResource("FileContextMenu");
-
-            ctx.PlacementTarget = (Control)sender;
-
-            ctx.IsOpen = true;
-        }
-
-        private void OpenConfigMenu(object sender, RoutedEventArgs e)
-        {
-            Window configWindow = new ConfigWindow();
-            configWindow.Owner = this;
-            configWindow.ShowDialog();
-        }
-
-        private void OpenProfileMenu(object sender, RoutedEventArgs e)
-        {
-            Window profileWindow = new ProfileWindow(profileManager, profilePage);
-            profileWindow.Owner = this;
-            profileWindow.ShowDialog();
-        }
     }
 }

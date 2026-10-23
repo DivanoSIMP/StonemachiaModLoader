@@ -82,7 +82,7 @@ internal static class FileValidation
         using var process = Process.Start(startInfo)
             ?? throw new InvalidOperationException("Windows could not start the selected injector to verify its command-line interface.");
         using var timeout = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
-        timeout.CancelAfter(TimeSpan.FromSeconds(8));
+        timeout.CancelAfter(TimeSpan.FromSeconds(3));
         Task<string> stdout = process.StandardOutput.ReadToEndAsync(timeout.Token);
         Task<string> stderr = process.StandardError.ReadToEndAsync(timeout.Token);
         try
@@ -98,8 +98,15 @@ internal static class FileValidation
         }
         catch (OperationCanceledException) when (!cancellationToken.IsCancellationRequested)
         {
-            try { process.Kill(entireProcessTree: true); } catch { /* best effort */ }
-            throw new TimeoutException("The selected injector did not respond to --help within 8 seconds.");
+            try
+            {
+                process.Kill(entireProcessTree: true);
+            }
+            catch
+            { 
+                /* best effort */
+            }
+            throw new TimeoutException("The selected injector did not respond to --help within 3 seconds.");
         }
     }
 

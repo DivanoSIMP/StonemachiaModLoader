@@ -29,6 +29,7 @@ internal sealed class ConfigManager
         }
         catch (Exception ex) when (ex is JsonException or IOException or UnauthorizedAccessException)
         {
+            Logger.Error($"Failed to read file at {ConfigPath}", ex);
             // Keep the app usable if configuration is malformed or temporarily inaccessible.
             return new ConfigManager();
         }
